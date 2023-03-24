@@ -1,25 +1,65 @@
-import logo from './logo.svg';
 import './App.css';
-
+import Nav from './components/Nav/Nav.jsx';
+import {useState,useEffect} from 'react';
+import axios from 'axios';
+import {Routes,Route,useLocation,useNavigate} from "react-router-dom"
+import Home from "./components/Home/Home.jsx"
+import About from './components/About/About';
+import Detail from './components/Detail/Detail';
+import Form from './components/Form/Form';
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+   const onSearch=(id)=>{
+      axios(`https://rickandmortyapi.com/api/character/${id}`).then(({ data }) => {
+         if (data.name){
+              setCharacters((oldChars) =>[...oldChars, data]
+              );
+         }
+         else{
+            window.alert('¡No hay personajes con este ID!');
+         }
+      })
+      .catch(()=>{window.alert('¡No hay personajes con este ID!'); 
+      }
+      )
+   }
+   const [characters, setCharacters]=useState([])
+   const Error=()=> <h1>Error 404</h1>
+   const navigate = useNavigate();
+  const location=useLocation();
+  const [acces,setAcces]=useState(false);
+  const Email="axel@mail.com";
+  const pass="Axel99";
+
+  const login=({email,password})=>{
+   if (password === pass && email === Email) {
+      setAcces(true);
+      navigate('/home');
+   }
+  }
+  useEffect(() => {
+   !acces && navigate('/');
+}, [acces]);
+  
+      if(location.pathname==='/'){
+         return (
+         <Routes>
+            <Route path="/" element={<Form login={login}/>}/>
+         </Routes>
+         )
+        }else{
+         return(
+         <div className='App'>
+         
+         <Nav onSearch={onSearch} Characters={characters}></Nav>
+         <Routes>
+         <Route path="/home" element={<Home characters={characters} setCharacters={setCharacters}/>}/>            
+         <Route path="/about" element={<About/>}></Route>
+         <Route path={"/detail/:id"} element={<Detail/>}/>
+         <Route path="*" element={<Error></Error>}/>
+         </Routes>
+         </div>
+         ) 
+        }
 }
 
 export default App;
