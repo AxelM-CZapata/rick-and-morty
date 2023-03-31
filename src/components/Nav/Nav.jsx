@@ -13,6 +13,9 @@ export default function Nav({onSearch}){
                 <Link to="/home" className="links-button">
                 <button>Home</button>
                 </Link>  
+                <Link to="/favorites">
+                    <button>Favoritos</button>
+                </Link>
             </div>
             
         </nav>

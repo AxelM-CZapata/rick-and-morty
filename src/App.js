@@ -7,6 +7,7 @@ import Home from "./components/Home/Home.jsx"
 import About from './components/About/About';
 import Detail from './components/Detail/Detail';
 import Form from './components/Form/Form';
+import Favoritos from './components/Favoritos/Favoritos';
 function App() {
    const onSearch=(id)=>{
       axios(`https://rickandmortyapi.com/api/character/${id}`).then(({ data }) => {
@@ -27,9 +28,10 @@ function App() {
    const navigate = useNavigate();
   const location=useLocation();
   const [acces,setAcces]=useState(false);
-  const Email="axel@mail.com";
-  const pass="Axel99";
-
+  const Email=""
+  const pass="";
+//axel@mail.com";
+//"Axel99"
   const login=({email,password})=>{
    if (password === pass && email === Email) {
       setAcces(true);
@@ -49,12 +51,12 @@ function App() {
         }else{
          return(
          <div className='App'>
-         
          <Nav onSearch={onSearch} Characters={characters}></Nav>
          <Routes>
          <Route path="/home" element={<Home characters={characters} setCharacters={setCharacters}/>}/>            
          <Route path="/about" element={<About/>}></Route>
          <Route path={"/detail/:id"} element={<Detail/>}/>
+         <Route path="/favorites" element={<Favoritos/>}/>
          <Route path="*" element={<Error></Error>}/>
          </Routes>
          </div>
